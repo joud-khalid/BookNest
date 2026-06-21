@@ -1,17 +1,48 @@
-# booknest
+# 📚 BookNest
 
-A new Flutter project.
+BookNest is a Flutter reading tracker application that helps users organize their personal library, track reading progress, and achieve yearly reading goals.
 
-## Getting Started
+---
 
-This project is a starting point for a Flutter application.
+## ✨ Features
 
-A few resources to get you started if this is your first Flutter project:
+- 📖 Add books to your personal library
+- ☁️ Store books using Firebase Firestore
+- 🔄 Real-time updates with StreamBuilder
+- ✏️ Update current reading progress
+- ⭐ Automatically mark books as finished
+- 🗑 Delete books from your library
+- 🎯 Track yearly reading goals
+- 📊 View reading statistics
 
-- [Learn Flutter](https://docs.flutter.dev/get-started/learn-flutter)
-- [Write your first Flutter app](https://docs.flutter.dev/get-started/codelab)
-- [Flutter learning resources](https://docs.flutter.dev/reference/learning-resources)
+---
 
-For help getting started with Flutter development, view the
-[online documentation](https://docs.flutter.dev/), which offers tutorials,
-samples, guidance on mobile development, and a full API reference.
+## 🛠 Technologies Used
+
+- Flutter
+- Dart
+- Firebase Firestore
+- Git & GitHub
+
+---
+
+## 📱 Screenshots
+
+Coming soon...
+
+---
+
+## 🚀 Future Improvements
+
+- 🔐 User authentication
+- 📚 Book cover images
+- 🔎 Search and filtering
+- 🌙 Dark mode
+- 📈 Reading analytics
+- 🤖 Google Books API integration
+
+---
+
+## 👩‍💻 Author
+
+Created by Joud Alhasan Alamoudi
