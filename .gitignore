@@ -46,3 +46,4 @@ app.*.map.json
 .vscode/
 android/build/
 build/
+lib/constants/api_keys.dart

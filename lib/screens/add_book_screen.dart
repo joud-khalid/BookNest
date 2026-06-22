@@ -3,6 +3,7 @@ import '../models/book.dart';
 import '../services/firestore_service.dart';
 import '../widgets/custom_button.dart';
 import '../widgets/custom_text_field.dart';
+import 'book_search_screen.dart';
 
 class AddBookScreen extends StatefulWidget {
   const AddBookScreen({super.key});
@@ -96,6 +97,41 @@ Future<void> saveBook() async {
             ),
 
             const SizedBox(height: 30),
+            
+
+            CustomButton(
+  text: "🔍 Search Google Books",
+  onPressed: () async {
+    final selectedBook =
+        await Navigator.push(
+      context,
+      MaterialPageRoute(
+        builder: (_) =>
+            const BookSearchScreen(),
+      ),
+    );
+
+    if (selectedBook != null) {
+      setState(() {
+        titleController.text =
+            selectedBook['title'];
+
+        authorController.text =
+            selectedBook['author'];
+
+        pagesController.text =
+            selectedBook['pages']
+                .toString();
+
+        coverController.text =
+            selectedBook['cover'];
+      });
+    }
+  },
+),
+
+const SizedBox(height: 20),
+
 
             CustomTextField(
               controller: titleController,

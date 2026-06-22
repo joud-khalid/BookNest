@@ -17,6 +17,7 @@ class HomeScreen extends StatefulWidget {
 }
 
 class _HomeScreenState extends State<HomeScreen> {
+  String searchQuery = "";
   @override
   Widget build(BuildContext context) {
     return StreamBuilder<List<Book>>(
@@ -31,6 +32,11 @@ class _HomeScreenState extends State<HomeScreen> {
         }
 
         final books = snapshot.data!;
+        final filteredBooks = books.where((book) {
+          return book.title
+            .toLowerCase()
+            .contains(searchQuery.toLowerCase());
+        }).toList();
 
         final int finishedBooks =
             books.where((book) => book.status == "Finished").length;
@@ -152,6 +158,29 @@ class _HomeScreenState extends State<HomeScreen> {
 
                     const SizedBox(height: 35),
 
+                    TextField(
+  onChanged: (value) {
+    setState(() {
+      searchQuery = value;
+    });
+  },
+
+  decoration: InputDecoration(
+    hintText: "Search books...",
+    prefixIcon: const Icon(Icons.search),
+
+    filled: true,
+    fillColor: Colors.white,
+
+    border: OutlineInputBorder(
+      borderRadius: BorderRadius.circular(15),
+      borderSide: BorderSide.none,
+    ),
+  ),
+),
+
+const SizedBox(height: 25),
+
                     const Text(
                       "Currently Reading",
                       style: TextStyle(
@@ -163,11 +192,10 @@ class _HomeScreenState extends State<HomeScreen> {
                     const SizedBox(height: 15),
 
                     Column(
-                      children: books
+                        children: filteredBooks
                           .where(
-                            (book) =>
-                                book.status == "Reading",
-                          )
+                            (book) => book.status == "Reading",
+                            )
 
                           .map(
                             (book) => BookCard(
