@@ -1,29 +1,7 @@
-import '../themes/app_theme.dart';
 import 'package:flutter/material.dart';
-import 'login_screen.dart';
+import '../themes/app_theme.dart';
 import '../widgets/custom_button.dart';
-
-
-void main() {
-  runApp(const BookNest());
-}
-
-class BookNest extends StatelessWidget {
-  const BookNest({super.key});
-
-  @override
-  Widget build(BuildContext context) {
-    return MaterialApp(
-      debugShowCheckedModeBanner: false,
-      title: 'BookNest',
-      theme: ThemeData(
-        scaffoldBackgroundColor: const Color(0xFFFAF7F2),
-        fontFamily: 'Arial',
-      ),
-      home: const WelcomeScreen(),
-    );
-  }
-}
+import 'login_screen.dart';
 
 class WelcomeScreen extends StatelessWidget {
   const WelcomeScreen({super.key});
@@ -33,9 +11,11 @@ class WelcomeScreen extends StatelessWidget {
     return Scaffold(
       body: Padding(
         padding: const EdgeInsets.all(30),
+
         child: Center(
           child: Column(
             mainAxisAlignment: MainAxisAlignment.center,
+
             children: [
               const Text(
                 "📚",
@@ -66,16 +46,16 @@ class WelcomeScreen extends StatelessWidget {
               const SizedBox(height: 50),
 
               CustomButton(
-  text: "Start Reading",
-  onPressed: () {
-    Navigator.push(
-      context,
-      MaterialPageRoute(
-        builder: (context) => const LoginScreen(),
-      ),
-    );
-  },
-),
+                text: "Start Reading",
+                onPressed: () {
+                  Navigator.push(
+                    context,
+                    MaterialPageRoute(
+                      builder: (_) => const LoginScreen(),
+                    ),
+                  );
+                },
+              ),
             ],
           ),
         ),

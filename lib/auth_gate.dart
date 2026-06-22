@@ -13,6 +13,7 @@ class AuthGate extends StatelessWidget {
       stream: FirebaseAuth.instance.authStateChanges(),
 
       builder: (context, snapshot) {
+        print("👤 Current user: ${snapshot.data?.email}");
 
         // Waiting for Firebase
         if (snapshot.connectionState == ConnectionState.waiting) {

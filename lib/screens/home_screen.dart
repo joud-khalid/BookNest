@@ -6,6 +6,9 @@ import '../services/firestore_service.dart';
 import '../services/auth_service.dart';
 import '../models/book.dart';
 
+import 'package:firebase_auth/firebase_auth.dart';
+import 'package:cloud_firestore/cloud_firestore.dart';
+
 class HomeScreen extends StatefulWidget {
   const HomeScreen({super.key});
 
@@ -109,13 +112,35 @@ class _HomeScreenState extends State<HomeScreen> {
 
                     const SizedBox(height: 10),
 
-                    const Text(
-                      "Hello, Joud 👋",
-                      style: TextStyle(
-                        fontSize: 22,
-                        fontWeight: FontWeight.w600,
-                      ),
-                    ),
+                    FutureBuilder<DocumentSnapshot>(
+  future: FirebaseFirestore.instance
+      .collection('users')
+      .doc(FirebaseAuth.instance.currentUser!.uid)
+      .get(),
+  builder: (context, snapshot) {
+    if (!snapshot.hasData) {
+      return const Text(
+        "Hello 👋",
+        style: TextStyle(
+          fontSize: 22,
+          fontWeight: FontWeight.w600,
+        ),
+      );
+    }
+
+    final data =
+        snapshot.data!.data()
+            as Map<String, dynamic>;
+
+    return Text(
+      "Hello, ${data['name']} 👋",
+      style: const TextStyle(
+        fontSize: 22,
+        fontWeight: FontWeight.w600,
+      ),
+    );
+  },
+),
 
                     const Text(
                       "What are you reading today?",

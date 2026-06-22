@@ -58,7 +58,17 @@ class AuthService {
 
   // Logout
   static Future<void> logout() async {
+  print("🚪 Logout started");
+
+  try {
     await GoogleSignIn().signOut();
-    await _auth.signOut();
+    print("🌐 Google sign out completed");
+  } catch (e) {
+    print("⚠️ Google sign out skipped: $e");
   }
+
+  await _auth.signOut();
+
+  print("✅ Firebase sign out completed");
+}
 }

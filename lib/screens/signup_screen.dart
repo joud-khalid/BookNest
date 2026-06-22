@@ -1,9 +1,13 @@
 import 'package:flutter/material.dart';
+
 import '../themes/app_theme.dart';
-import '../widgets/custom_text_field.dart';
 import '../widgets/custom_button.dart';
+import '../widgets/custom_text_field.dart';
+
 import '../services/auth_service.dart';
-import 'home_screen.dart';
+
+import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 
 class SignupScreen extends StatefulWidget {
   const SignupScreen({super.key});
@@ -17,6 +21,8 @@ class _SignupScreenState extends State<SignupScreen> {
   final emailController = TextEditingController();
   final passwordController = TextEditingController();
 
+  bool isLoading = false;
+
   @override
   void dispose() {
     nameController.dispose();
@@ -27,19 +33,27 @@ class _SignupScreenState extends State<SignupScreen> {
 
   Future<void> signup() async {
     try {
-      await AuthService.signUp(
-        emailController.text.trim(),
-        passwordController.text.trim(),
-      );
+      setState(() {
+        isLoading = true;
+      });
 
+      final userCredential =
+    await AuthService.signUp(
+  emailController.text.trim(),
+  passwordController.text.trim(),
+);
+
+await FirebaseFirestore.instance
+    .collection('users')
+    .doc(userCredential.user!.uid)
+    .set({
+  'name': nameController.text.trim(),
+  'email': emailController.text.trim(),
+});
+      
       if (!mounted) return;
 
-      Navigator.pushReplacement(
-        context,
-        MaterialPageRoute(
-          builder: (context) => const HomeScreen(),
-        ),
-      );
+      Navigator.of(context).popUntil((route) => route.isFirst);
 
     } catch (e) {
       if (!mounted) return;
@@ -49,6 +63,12 @@ class _SignupScreenState extends State<SignupScreen> {
           content: Text(e.toString()),
         ),
       );
+    } finally {
+      if (mounted) {
+        setState(() {
+          isLoading = false;
+        });
+      }
     }
   }
 
@@ -60,8 +80,6 @@ class _SignupScreenState extends State<SignupScreen> {
 
         child: SingleChildScrollView(
           child: Column(
-            mainAxisAlignment: MainAxisAlignment.center,
-
             children: [
               const SizedBox(height: 80),
 
@@ -78,16 +96,6 @@ class _SignupScreenState extends State<SignupScreen> {
                   fontSize: 32,
                   fontWeight: FontWeight.bold,
                   color: AppTheme.darkText,
-                ),
-              ),
-
-              const SizedBox(height: 10),
-
-              const Text(
-                "Start your reading journey",
-                style: TextStyle(
-                  fontSize: 16,
-                  color: AppTheme.lightText,
                 ),
               ),
 
@@ -118,10 +126,12 @@ class _SignupScreenState extends State<SignupScreen> {
 
               const SizedBox(height: 30),
 
-              CustomButton(
-                text: "Create Account",
-                onPressed: signup,
-              ),
+              isLoading
+                  ? const CircularProgressIndicator()
+                  : CustomButton(
+                      text: "Create Account",
+                      onPressed: signup,
+                    ),
             ],
           ),
         ),
