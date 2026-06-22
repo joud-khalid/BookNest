@@ -19,6 +19,7 @@ class _AddBookScreenState extends State<AddBookScreen> {
   final coverController = TextEditingController();
 
   String selectedStatus = "Want To Read";
+  String bookDescription = "";
   
   @override
   void dispose() {
@@ -41,12 +42,16 @@ Future<void> saveBook() async {
     }
 
     Book newBook = Book(
-      title: titleController.text,
-      author: authorController.text,
-      totalPages: int.tryParse(pagesController.text) ?? 0,
-      status: selectedStatus,
-      coverUrl: coverController.text.trim(),
-    );
+  title: titleController.text,
+  author: authorController.text,
+  totalPages: int.tryParse(
+          pagesController.text) ??
+      0,
+  status: selectedStatus,
+  coverUrl: coverController.text.trim(),
+
+  description: bookDescription,
+);
 
     print("📚 Book created");
 
@@ -125,6 +130,9 @@ Future<void> saveBook() async {
 
         coverController.text =
             selectedBook['cover'];
+
+            bookDescription =
+    selectedBook['description'] ?? "";
       });
     }
   },

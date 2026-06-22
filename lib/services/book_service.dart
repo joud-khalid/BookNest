@@ -8,6 +8,7 @@ class BookService {
       totalPages: 310,
       currentPage: 120,
       status: "Reading",
+      description: "",
     ),
   ];
 

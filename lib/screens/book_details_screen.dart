@@ -140,6 +140,30 @@ class BookDetailsScreen extends StatelessWidget {
                   Text(
                     "${(progress * 100).toInt()}% completed",
                   ),
+                  const SizedBox(height: 25),
+
+if (book.description.isNotEmpty) ...[
+  const Align(
+    alignment: Alignment.centerLeft,
+    child: Text(
+      "Description",
+      style: TextStyle(
+        fontSize: 20,
+        fontWeight: FontWeight.bold,
+      ),
+    ),
+  ),
+
+  const SizedBox(height: 10),
+
+  Text(
+    book.description,
+    style: const TextStyle(
+      height: 1.5,
+      color: Colors.black87,
+    ),
+  ),
+],
                 ],
               ),
             ),

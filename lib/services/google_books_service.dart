@@ -51,6 +51,9 @@ print("📦 Response: ${response.body}");
     (volumeInfo['imageLinks']?['thumbnail'] ?? '')
         .replaceAll('http://', 'https://')
         .replaceAll('zoom=1', 'zoom=5'),
+
+        'description':
+    volumeInfo['description'] ?? '',
         };
       }),
     );

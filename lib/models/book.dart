@@ -6,12 +6,14 @@ class Book {
   final String coverUrl;
   int currentPage;
   String status;
+  String description;
 
   Book({
     this.id = "",
     required this.title,
     required this.author,
     required this.totalPages,
+    required this.description,
     this.currentPage = 0,
     this.status = "Want To Read",
     this.coverUrl = "",
@@ -26,6 +28,7 @@ class Book {
       currentPage: data['currentPage'] ?? 0,
       status: data['status'] ?? "Want To Read",
       coverUrl: data['coverUrl'] ?? "",
+      description: data['description'] ?? "",
     );
   }
 
@@ -37,6 +40,7 @@ class Book {
       'currentPage': currentPage,
       'status': status,
       'coverUrl': coverUrl,
+      'description': description,
     };
   }
 }
