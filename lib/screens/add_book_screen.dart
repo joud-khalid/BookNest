@@ -15,6 +15,7 @@ class _AddBookScreenState extends State<AddBookScreen> {
   final TextEditingController titleController = TextEditingController();
   final TextEditingController authorController = TextEditingController();
   final TextEditingController pagesController = TextEditingController();
+  final coverController = TextEditingController();
 
   String selectedStatus = "Want To Read";
   
@@ -24,6 +25,7 @@ class _AddBookScreenState extends State<AddBookScreen> {
     authorController.dispose();
     pagesController.dispose();
     super.dispose();
+    coverController.dispose();
   }
 
 Future<void> saveBook() async {
@@ -42,6 +44,7 @@ Future<void> saveBook() async {
       author: authorController.text,
       totalPages: int.tryParse(pagesController.text) ?? 0,
       status: selectedStatus,
+      coverUrl: coverController.text.trim(),
     );
 
     print("📚 Book created");
@@ -107,14 +110,23 @@ Future<void> saveBook() async {
               hintText: "Author",
               icon: Icons.person,
             ),
+            
+            const SizedBox(height: 16),
+
+
+            CustomTextField(
+              controller: coverController,
+              hintText: "Cover Image URL",
+              icon: Icons.image_outlined,
+            ),
 
             const SizedBox(height: 16),
 
-CustomTextField(
-  controller: pagesController,
-  hintText: "Total Pages",
-  icon: Icons.numbers,
-),
+            CustomTextField(
+              controller: pagesController,
+              hintText: "Total Pages",
+              icon: Icons.numbers,
+            ),
 
 const SizedBox(height: 16),
 

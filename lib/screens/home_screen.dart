@@ -173,6 +173,7 @@ class _HomeScreenState extends State<HomeScreen> {
                             (book) => BookCard(
                               title: book.title,
                               author: book.author,
+                              coverUrl: book.coverUrl,
                               currentPage: book.currentPage,
                               totalPages: book.totalPages,
 

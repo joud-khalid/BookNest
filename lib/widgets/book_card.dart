@@ -4,6 +4,7 @@ import '../themes/app_theme.dart';
 class BookCard extends StatelessWidget {
   final String title;
   final String author;
+  final String coverUrl;
   final int currentPage;
   final int totalPages;
   final VoidCallback onDelete;
@@ -13,6 +14,7 @@ const BookCard({
   super.key,
   required this.title,
   required this.author,
+  required this.coverUrl,
   required this.currentPage,
   required this.totalPages,
   required this.onDelete,
@@ -46,14 +48,59 @@ const BookCard({
         children: [
 
 Row(
-  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+  crossAxisAlignment: CrossAxisAlignment.start,
   children: [
-    Text(
-      "📖 $title",
-      style: const TextStyle(
-        fontSize: 20,
-        fontWeight: FontWeight.bold,
-        color: AppTheme.darkText,
+
+    // Book Cover
+    ClipRRect(
+      borderRadius: BorderRadius.circular(12),
+      child: coverUrl.isNotEmpty
+          ? Image.network(
+              coverUrl,
+              width: 70,
+              height: 100,
+              fit: BoxFit.cover,
+            )
+          : Container(
+              width: 70,
+              height: 100,
+              color: Colors.grey.shade200,
+              child: const Icon(
+                Icons.menu_book,
+                size: 40,
+                color: Colors.grey,
+              ),
+            ),
+    ),
+
+    const SizedBox(width: 15),
+
+    Expanded(
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+
+          Text(
+            title,
+            maxLines: 2,
+            overflow: TextOverflow.ellipsis,
+            style: const TextStyle(
+              fontSize: 20,
+              fontWeight: FontWeight.bold,
+              color: AppTheme.darkText,
+            ),
+          ),
+
+          const SizedBox(height: 5),
+
+          Text(
+            author,
+            style: const TextStyle(
+              fontSize: 16,
+              color: AppTheme.lightText,
+            ),
+          ),
+        ],
       ),
     ),
 
@@ -66,15 +113,7 @@ Row(
     ),
   ],
 ),
-          const SizedBox(height: 5),
-
-          Text(
-            author,
-            style: const TextStyle(
-              fontSize: 16,
-              color: AppTheme.lightText,
-            ),
-          ),
+          
 
           const SizedBox(height: 15),
 

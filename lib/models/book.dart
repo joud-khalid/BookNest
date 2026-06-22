@@ -3,6 +3,7 @@ class Book {
   final String title;
   final String author;
   final int totalPages;
+  final String coverUrl;
   int currentPage;
   String status;
 
@@ -13,6 +14,7 @@ class Book {
     required this.totalPages,
     this.currentPage = 0,
     this.status = "Want To Read",
+    this.coverUrl = "",
   });
 
   factory Book.fromMap(String id, Map<String, dynamic> data) {
@@ -23,6 +25,7 @@ class Book {
       totalPages: data['totalPages'] ?? 0,
       currentPage: data['currentPage'] ?? 0,
       status: data['status'] ?? "Want To Read",
+      coverUrl: data['coverUrl'] ?? "",
     );
   }
 
@@ -33,6 +36,7 @@ class Book {
       'totalPages': totalPages,
       'currentPage': currentPage,
       'status': status,
+      'coverUrl': coverUrl,
     };
   }
 }
