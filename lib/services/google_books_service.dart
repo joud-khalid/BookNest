@@ -13,6 +13,9 @@ class GoogleBooksService {
     );
 
     final response = await http.get(url);
+    print("🔍 URL: $url");
+print("📡 Status Code: ${response.statusCode}");
+print("📦 Response: ${response.body}");
 
     if (response.statusCode != 200) {
       throw Exception(
@@ -29,6 +32,7 @@ class GoogleBooksService {
     return List<Map<String, dynamic>>.from(
       data['items'].map((item) {
         final volumeInfo = item['volumeInfo'];
+        print(volumeInfo['imageLinks']);
 
         return {
           'title':
@@ -44,9 +48,9 @@ class GoogleBooksService {
               volumeInfo['pageCount'] ?? 0,
 
           'cover':
-              volumeInfo['imageLinks']
-                      ?['thumbnail'] ??
-                  '',
+    (volumeInfo['imageLinks']?['thumbnail'] ?? '')
+        .replaceAll('http://', 'https://')
+        .replaceAll('zoom=1', 'zoom=5'),
         };
       }),
     );

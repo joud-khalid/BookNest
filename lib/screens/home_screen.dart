@@ -5,9 +5,11 @@ import 'add_book_screen.dart';
 import '../services/firestore_service.dart';
 import '../services/auth_service.dart';
 import '../models/book.dart';
+import 'book_details_screen.dart';
 
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'profile_screen.dart';
 
 class HomeScreen extends StatefulWidget {
   const HomeScreen({super.key});
@@ -104,15 +106,26 @@ class _HomeScreenState extends State<HomeScreen> {
                         ),
 
                         IconButton(
-                          icon: const Icon(
-                            Icons.logout,
-                            color: Color(0xFF6B4F4F),
-                          ),
+  icon: const Icon(
+    Icons.person_outline,
+    color: Color(0xFF6B4F4F),
+  ),
 
-                          onPressed: () async {
-                            await AuthService.logout();
-                          },
-                        ),
+  onPressed: () {
+    Navigator.push(
+      context,
+      MaterialPageRoute(
+        builder: (_) => ProfileScreen(
+          totalBooks: books.length,
+          finishedBooks: finishedBooks,
+          readingBooks: readingBooks,
+          wantToReadBooks: wantToReadBooks,
+          yearlyGoal: yearlyGoal,
+        ),
+      ),
+    );
+  },
+),
                       ],
                     ),
 
@@ -204,6 +217,16 @@ const SizedBox(height: 25),
                               coverUrl: book.coverUrl,
                               currentPage: book.currentPage,
                               totalPages: book.totalPages,
+
+                              onTap: () {
+  Navigator.push(
+    context,
+    MaterialPageRoute(
+      builder: (_) =>
+          BookDetailsScreen(book: book),
+    ),
+  );
+},
 
                               onDelete: () async {
                                 await FirestoreService

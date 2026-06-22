@@ -9,6 +9,7 @@ class BookCard extends StatelessWidget {
   final int totalPages;
   final VoidCallback onDelete;
   final VoidCallback onUpdate;
+  final VoidCallback onTap;
 
 const BookCard({
   super.key,
@@ -19,13 +20,17 @@ const BookCard({
   required this.totalPages,
   required this.onDelete,
   required this.onUpdate,
+  required this.onTap,
 });
 
   @override
   Widget build(BuildContext context) {
-    double progress = currentPage / totalPages;
+    double progress =
+    totalPages > 0 ? currentPage / totalPages : 0;
 
-    return Container(
+    return GestureDetector(
+      onTap: onTap,
+      child: Container(
       width: double.infinity,
       margin: const EdgeInsets.only(bottom: 15),
       padding: const EdgeInsets.all(18),
@@ -57,8 +62,8 @@ Row(
       child: coverUrl.isNotEmpty
           ? Image.network(
               coverUrl,
-              width: 70,
-              height: 100,
+              width: 80,
+              height: 120,
               fit: BoxFit.cover,
             )
           : Container(
@@ -124,6 +129,16 @@ Row(
             ),
           ),
 
+          const SizedBox(height: 4),
+
+Text(
+  "${(progress * 100).toInt()}% completed",
+  style: const TextStyle(
+    color: AppTheme.primary,
+    fontWeight: FontWeight.w600,
+  ),
+),
+
           const SizedBox(height: 10),
 
           ClipRRect(
@@ -154,6 +169,7 @@ TextButton.icon(
   ),
 ),
         ],
+      ),
       ),
     );
   }
