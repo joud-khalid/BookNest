@@ -132,29 +132,63 @@ Future<void> saveBook() async {
 
 const SizedBox(height: 20),
 
+if (titleController.text.isNotEmpty)
+  Container(
+    width: double.infinity,
+    padding: const EdgeInsets.all(16),
+    decoration: BoxDecoration(
+      color: Colors.white,
+      borderRadius: BorderRadius.circular(20),
+    ),
+    child: Row(
+      children: [
 
-            CustomTextField(
-              controller: titleController,
-              hintText: "Book Title",
-              icon: Icons.menu_book,
+        if (coverController.text.isNotEmpty)
+          ClipRRect(
+            borderRadius: BorderRadius.circular(12),
+            child: Image.network(
+              coverController.text,
+              width: 70,
+              height: 100,
+              fit: BoxFit.cover,
             ),
+          ),
 
-            const SizedBox(height: 16),
+        const SizedBox(width: 15),
 
-            CustomTextField(
-              controller: authorController,
-              hintText: "Author",
-              icon: Icons.person,
-            ),
-            
-            const SizedBox(height: 16),
+        Expanded(
+          child: Column(
+            crossAxisAlignment:
+                CrossAxisAlignment.start,
+            children: [
+              Text(
+                titleController.text,
+                style: const TextStyle(
+                  fontSize: 18,
+                  fontWeight: FontWeight.bold,
+                ),
+              ),
+
+              const SizedBox(height: 5),
+
+              Text(
+                authorController.text,
+              ),
+
+              const SizedBox(height: 5),
+
+              Text(
+                "${pagesController.text} pages",
+              ),
+            ],
+          ),
+        ),
+      ],
+    ),
+  ),
 
 
-            CustomTextField(
-              controller: coverController,
-              hintText: "Cover Image URL",
-              icon: Icons.image_outlined,
-            ),
+  
 
             const SizedBox(height: 16),
 
