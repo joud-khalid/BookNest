@@ -2,7 +2,7 @@ import 'package:booknest/firebase_options.dart';
 import 'package:flutter/material.dart';
 import 'package:firebase_core/firebase_core.dart';
 
-import 'screens/welcome_screen.dart';
+import 'auth_gate.dart';
 import 'themes/app_theme.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 
@@ -29,7 +29,6 @@ class BookNest extends StatelessWidget {
       debugShowCheckedModeBanner: false,
       title: 'BookNest',
       theme: AppTheme.lightTheme,
-      home: const WelcomeScreen(),
-    );
+      home: const AuthGate(),    );
   }
 }

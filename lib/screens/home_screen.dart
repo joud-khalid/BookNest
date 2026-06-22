@@ -3,6 +3,7 @@ import '../widgets/book_card.dart';
 import '../widgets/library_stat_card.dart';
 import 'add_book_screen.dart';
 import '../services/firestore_service.dart';
+import '../services/auth_service.dart';
 import '../models/book.dart';
 
 class HomeScreen extends StatefulWidget {
@@ -70,19 +71,40 @@ class _HomeScreenState extends State<HomeScreen> {
             child: SingleChildScrollView(
               child: Padding(
                 padding: const EdgeInsets.all(24),
+
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
+
                   children: [
 
                     const SizedBox(height: 20),
 
-                    const Text(
-                      "📚 BookNest",
-                      style: TextStyle(
-                        fontSize: 32,
-                        fontWeight: FontWeight.bold,
-                        color: Color(0xFF6B4F4F),
-                      ),
+                    Row(
+                      mainAxisAlignment:
+                          MainAxisAlignment.spaceBetween,
+
+                      children: [
+
+                        const Text(
+                          "📚 BookNest",
+                          style: TextStyle(
+                            fontSize: 32,
+                            fontWeight: FontWeight.bold,
+                            color: Color(0xFF6B4F4F),
+                          ),
+                        ),
+
+                        IconButton(
+                          icon: const Icon(
+                            Icons.logout,
+                            color: Color(0xFF6B4F4F),
+                          ),
+
+                          onPressed: () async {
+                            await AuthService.logout();
+                          },
+                        ),
+                      ],
                     ),
 
                     const SizedBox(height: 10),
@@ -117,71 +139,86 @@ class _HomeScreenState extends State<HomeScreen> {
 
                     Column(
                       children: books
-                          .where((book) => book.status == "Reading")
-                          .map((book) => BookCard(
-  title: book.title,
-  author: book.author,
-  currentPage: book.currentPage,
-  totalPages: book.totalPages,
+                          .where(
+                            (book) =>
+                                book.status == "Reading",
+                          )
 
-  // 🗑 Delete from Firebase
-  onDelete: () async {
-    await FirestoreService.deleteBook(book.id);
-  },
+                          .map(
+                            (book) => BookCard(
+                              title: book.title,
+                              author: book.author,
+                              currentPage: book.currentPage,
+                              totalPages: book.totalPages,
 
-  // ✏️ Update reading progress
-  onUpdate: () {
-    final TextEditingController pageController =
-        TextEditingController();
+                              onDelete: () async {
+                                await FirestoreService
+                                    .deleteBook(book.id);
+                              },
 
-    showDialog(
-      context: context,
-      builder: (context) {
-        return AlertDialog(
-          title: const Text("Update Progress"),
+                              onUpdate: () {
+                                final pageController =
+                                    TextEditingController();
 
-          content: TextField(
-            controller: pageController,
-            keyboardType: TextInputType.number,
-            decoration: const InputDecoration(
-              hintText: "Enter current page",
-            ),
-          ),
+                                showDialog(
+                                  context: context,
+                                  builder: (context) {
+                                    return AlertDialog(
+                                      title: const Text(
+                                        "Update Progress",
+                                      ),
 
-          actions: [
-            TextButton(
-              onPressed: () {
-                Navigator.pop(context);
-              },
-              child: const Text("Cancel"),
-            ),
+                                      content: TextField(
+                                        controller:
+                                            pageController,
+                                        keyboardType:
+                                            TextInputType.number,
 
-            TextButton(
-              onPressed: () async {
-                book.currentPage =
-                    int.tryParse(pageController.text) ??
-                    book.currentPage;
+                                        decoration:
+                                            const InputDecoration(
+                                          hintText:
+                                              "Enter current page",
+                                        ),
+                                      ),
+                                                                            actions: [
+                                        TextButton(
+                                          onPressed: () {
+                                            Navigator.pop(context);
+                                          },
+                                          child: const Text("Cancel"),
+                                        ),
 
-                // Change status automatically
-                if (book.currentPage >= book.totalPages) {
-                  book.currentPage = book.totalPages;
-                  book.status = "Finished";
-                } else if (book.currentPage > 0) {
-                  book.status = "Reading";
-                }
+                                        TextButton(
+                                          onPressed: () async {
+                                            book.currentPage =
+                                                int.tryParse(
+                                                      pageController.text,
+                                                    ) ??
+                                                    book.currentPage;
 
-                await FirestoreService.updateBook(book);
+                                            if (book.currentPage >=
+                                                book.totalPages) {
+                                              book.currentPage =
+                                                  book.totalPages;
+                                              book.status = "Finished";
+                                            } else if (book.currentPage > 0) {
+                                              book.status = "Reading";
+                                            }
 
-                Navigator.pop(context);
-              },
-              child: const Text("Save"),
-            ),
-          ],
-        );
-      },
-    );
-  },
-))
+                                            await FirestoreService
+                                                .updateBook(book);
+
+                                            Navigator.pop(context);
+                                          },
+                                          child: const Text("Save"),
+                                        ),
+                                      ],
+                                    );
+                                  },
+                                );
+                              },
+                            ),
+                          )
                           .toList(),
                     ),
 
@@ -234,6 +271,7 @@ class _HomeScreenState extends State<HomeScreen> {
                     Container(
                       width: double.infinity,
                       padding: const EdgeInsets.all(18),
+
                       decoration: BoxDecoration(
                         color: Colors.white,
                         borderRadius: BorderRadius.circular(20),
@@ -247,8 +285,8 @@ class _HomeScreenState extends State<HomeScreen> {
                       ),
 
                       child: Column(
-                        crossAxisAlignment:
-                            CrossAxisAlignment.start,
+                        crossAxisAlignment: CrossAxisAlignment.start,
+
                         children: [
                           Text(
                             "$finishedBooks / $yearlyGoal books",
@@ -263,6 +301,7 @@ class _HomeScreenState extends State<HomeScreen> {
                           ClipRRect(
                             borderRadius:
                                 BorderRadius.circular(10),
+
                             child: LinearProgressIndicator(
                               value: progress,
                               minHeight: 8,
