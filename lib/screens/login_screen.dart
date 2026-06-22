@@ -3,9 +3,53 @@ import '../themes/app_theme.dart';
 import 'signup_screen.dart';
 import '../widgets/custom_text_field.dart';
 import '../widgets/custom_button.dart';
+import '../services/auth_service.dart';
+import 'home_screen.dart';
 
-class LoginScreen extends StatelessWidget {
+class LoginScreen extends StatefulWidget {
   const LoginScreen({super.key});
+
+  @override
+  State<LoginScreen> createState() => _LoginScreenState();
+}
+
+class _LoginScreenState extends State<LoginScreen> {
+  final emailController = TextEditingController();
+  final passwordController = TextEditingController();
+
+  @override
+  void dispose() {
+    emailController.dispose();
+    passwordController.dispose();
+    super.dispose();
+  }
+
+  Future<void> login() async {
+  try {
+    await AuthService.login(
+      emailController.text.trim(),
+      passwordController.text.trim(),
+    );
+
+    if (!mounted) return;
+
+    Navigator.pushReplacement(
+      context,
+      MaterialPageRoute(
+        builder: (context) => const HomeScreen(),
+      ),
+    );
+
+  } catch (e) {
+    if (!mounted) return;
+
+    ScaffoldMessenger.of(context).showSnackBar(
+      SnackBar(
+        content: Text(e.toString()),
+      ),
+    );
+  }
+}
 
   @override
   Widget build(BuildContext context) {
@@ -43,14 +87,16 @@ class LoginScreen extends StatelessWidget {
 
             const SizedBox(height: 40),
 
-            const CustomTextField(
+            CustomTextField(
+  controller: emailController,
   hintText: "Email",
   icon: Icons.email_outlined,
 ),
 
             const SizedBox(height: 20),
 
-            const CustomTextField(
+            CustomTextField(
+  controller: passwordController,
   hintText: "Password",
   icon: Icons.lock_outline,
   obscureText: true,
@@ -60,7 +106,7 @@ class LoginScreen extends StatelessWidget {
 
             CustomButton(
   text: "Sign In",
-  onPressed: () {},
+  onPressed: login,
 ),
 
 const SizedBox(height: 20),

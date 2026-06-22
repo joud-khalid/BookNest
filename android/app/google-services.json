@@ -12,7 +12,20 @@
           "package_name": "com.example.booknest"
         }
       },
-      "oauth_client": [],
+      "oauth_client": [
+        {
+          "client_id": "1048672677867-gvmqterp98oe45o2nc2lf12hhf3qtmbf.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.example.booknest",
+            "certificate_hash": "bfe665702d160cbebf86fd0e946e22179d3552ea"
+          }
+        },
+        {
+          "client_id": "1048672677867-tsrtp5cic455rhv19v7s2b37sqrgokdu.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
       "api_key": [
         {
           "current_key": "AIzaSyBdulwPKbwpZTBG2ljW6BgSt6hIWRRzFIU"
@@ -20,7 +33,19 @@
       ],
       "services": {
         "appinvite_service": {
-          "other_platform_oauth_client": []
+          "other_platform_oauth_client": [
+            {
+              "client_id": "1048672677867-tsrtp5cic455rhv19v7s2b37sqrgokdu.apps.googleusercontent.com",
+              "client_type": 3
+            },
+            {
+              "client_id": "1048672677867-mldl8f8i5kreupi216fjpnp02e7jr0r8.apps.googleusercontent.com",
+              "client_type": 2,
+              "ios_info": {
+                "bundle_id": "com.example.booknest"
+              }
+            }
+          ]
         }
       }
     }
