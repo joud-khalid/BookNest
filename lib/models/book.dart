@@ -7,6 +7,7 @@ class Book {
   int currentPage;
   String status;
   String description;
+  bool isFavorite;
 
   Book({
     this.id = "",
@@ -17,6 +18,7 @@ class Book {
     this.currentPage = 0,
     this.status = "Want To Read",
     this.coverUrl = "",
+    this.isFavorite = false,
   });
 
   factory Book.fromMap(String id, Map<String, dynamic> data) {
@@ -29,6 +31,7 @@ class Book {
       status: data['status'] ?? "Want To Read",
       coverUrl: data['coverUrl'] ?? "",
       description: data['description'] ?? "",
+      isFavorite: data['isFavorite'] ?? false,
     );
   }
 
@@ -41,6 +44,7 @@ class Book {
       'status': status,
       'coverUrl': coverUrl,
       'description': description,
+      'isFavorite': isFavorite,
     };
   }
 }

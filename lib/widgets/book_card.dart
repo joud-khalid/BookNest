@@ -10,6 +10,8 @@ class BookCard extends StatelessWidget {
   final VoidCallback onDelete;
   final VoidCallback onUpdate;
   final VoidCallback onTap;
+  final VoidCallback onFavorite;
+  final bool isFavorite;
 
 const BookCard({
   super.key,
@@ -21,6 +23,8 @@ const BookCard({
   required this.onDelete,
   required this.onUpdate,
   required this.onTap,
+  required this.onFavorite,
+  required this.isFavorite,
 });
 
   @override
@@ -109,6 +113,19 @@ Row(
       ),
     ),
 
+    Column(
+  children: [
+
+    IconButton(
+      onPressed: onFavorite,
+      icon: Icon(
+        isFavorite
+            ? Icons.favorite
+            : Icons.favorite_border,
+        color: Colors.red,
+      ),
+    ),
+
     IconButton(
       onPressed: onDelete,
       icon: const Icon(
@@ -116,6 +133,8 @@ Row(
         color: Colors.red,
       ),
     ),
+  ],
+),
   ],
 ),
           

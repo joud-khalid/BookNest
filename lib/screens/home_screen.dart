@@ -40,6 +40,10 @@ class _HomeScreenState extends State<HomeScreen> {
             .contains(searchQuery.toLowerCase());
         }).toList();
 
+        final favoriteBooks = filteredBooks
+          .where((book) => book.isFavorite)
+          .toList();
+
         final int finishedBooks =
             books.where((book) => book.status == "Finished").length;
 
@@ -192,7 +196,60 @@ class _HomeScreenState extends State<HomeScreen> {
   ),
 ),
 
-const SizedBox(height: 25),
+                    const SizedBox(height: 25),
+
+                    if (favoriteBooks.isNotEmpty) ...[
+  const Text(
+    "⭐ Favorites",
+    style: TextStyle(
+      fontSize: 20,
+      fontWeight: FontWeight.bold,
+    ),
+  ),
+
+  const SizedBox(height: 15),
+
+  Column(
+  children: favoriteBooks.map(
+    (book) => BookCard(
+      title: book.title,
+      author: book.author,
+      coverUrl: book.coverUrl,
+      currentPage: book.currentPage,
+      totalPages: book.totalPages,
+      isFavorite: book.isFavorite,
+
+      onFavorite: () async {
+        book.isFavorite = !book.isFavorite;
+        await FirestoreService.updateBook(book);
+      },
+
+      onTap: () {
+        Navigator.push(
+          context,
+          MaterialPageRoute(
+            builder: (_) =>
+                BookDetailsScreen(book: book),
+          ),
+        );
+      },
+
+      onDelete: () async {
+        await FirestoreService.deleteBook(
+          book.id,
+        );
+      },
+
+      onUpdate: () {
+        // same update dialog code
+      },
+    ),
+  ).toList(),
+),
+
+  const SizedBox(height: 30),
+],
+
 
                     const Text(
                       "Currently Reading",
@@ -206,9 +263,11 @@ const SizedBox(height: 25),
 
                     Column(
                         children: filteredBooks
-                          .where(
-                            (book) => book.status == "Reading",
-                            )
+    .where(
+      (book) =>
+          book.status == "Reading" &&
+          !book.isFavorite,
+    )
 
                           .map(
                             (book) => BookCard(
@@ -217,16 +276,23 @@ const SizedBox(height: 25),
                               coverUrl: book.coverUrl,
                               currentPage: book.currentPage,
                               totalPages: book.totalPages,
+                              isFavorite: book.isFavorite,
+
+                              onFavorite: () async {
+                                book.isFavorite = !book.isFavorite;
+
+                                await FirestoreService.updateBook(book);
+                              },
 
                               onTap: () {
-  Navigator.push(
-    context,
-    MaterialPageRoute(
-      builder: (_) =>
-          BookDetailsScreen(book: book),
-    ),
-  );
-},
+                                Navigator.push(
+                                      context,
+                                  MaterialPageRoute(
+                                  builder: (_) =>
+                                  BookDetailsScreen(book: book),
+                                  ),
+                                );
+                              },
 
                               onDelete: () async {
                                 await FirestoreService
