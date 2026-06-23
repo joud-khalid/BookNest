@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import '../services/auth_service.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
+import '../auth_gate.dart';
 
 class ProfileScreen extends StatelessWidget {
   final int totalBooks;
@@ -133,8 +134,17 @@ class ProfileScreen extends StatelessWidget {
 
             child: ElevatedButton(
               onPressed: () async {
-                await AuthService.logout();
-              },
+  await AuthService.logout();
+
+  if (!context.mounted) return;
+
+  Navigator.of(context).pushAndRemoveUntil(
+    MaterialPageRoute(
+      builder: (_) => const AuthGate(),
+    ),
+    (route) => false,
+  );
+},
 
               child: const Text(
                 "Logout",

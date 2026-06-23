@@ -122,6 +122,34 @@ class _LoginScreenState extends State<LoginScreen> {
                     onPressed: login,
                   ),
 
+                  const SizedBox(height: 15),
+
+OutlinedButton.icon(
+  onPressed: () async {
+    try {
+      await AuthService.signInWithGoogle();
+      if (!mounted) return;
+
+Navigator.pop(context);
+    } catch (e) {
+      if (!mounted) return;
+
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(
+          content: Text(e.toString()),
+        ),
+      );
+    }
+  },
+
+  icon: const Icon(Icons.login),
+
+  label: const Text(
+    "Continue with Google",
+  ),
+  
+),
+
             const SizedBox(height: 20),
 
             TextButton(

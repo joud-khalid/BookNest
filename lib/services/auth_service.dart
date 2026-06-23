@@ -1,5 +1,7 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:google_sign_in/google_sign_in.dart';
+import 'package:cloud_firestore/cloud_firestore.dart';
+
 
 class AuthService {
   static final FirebaseAuth _auth = FirebaseAuth.instance;
@@ -35,26 +37,41 @@ class AuthService {
 
   // Google Sign-In
   static Future<UserCredential> signInWithGoogle() async {
-    final GoogleSignInAccount? googleUser =
-        await GoogleSignIn().signIn();
+final GoogleSignInAccount? googleUser =
+await GoogleSignIn().signIn();
 
-    if (googleUser == null) {
-      throw Exception("Google sign in cancelled");
-    }
+if (googleUser == null) {
+throw Exception("Google sign in cancelled");
+}
 
-    final GoogleSignInAuthentication googleAuth =
-        await googleUser.authentication;
+final GoogleSignInAuthentication googleAuth =
+await googleUser.authentication;
 
-    final credential =
-        GoogleAuthProvider.credential(
-      accessToken: googleAuth.accessToken,
-      idToken: googleAuth.idToken,
-    );
+final credential =
+GoogleAuthProvider.credential(
+accessToken: googleAuth.accessToken,
+idToken: googleAuth.idToken,
+);
 
-    return await _auth.signInWithCredential(
-      credential,
-    );
-  }
+final result =
+await _auth.signInWithCredential(
+credential,
+);
+
+await FirebaseFirestore.instance
+.collection('users')
+.doc(result.user!.uid)
+.set({
+'name':
+result.user!.displayName ??
+'Reader',
+'email':
+result.user!.email ?? '',
+}, SetOptions(merge: true));
+
+return result;
+}
+
 
   // Logout
   static Future<void> logout() async {
